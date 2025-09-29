@@ -252,7 +252,7 @@
 
     <div class="page-container">
         <div class="form-container">
-           
+            
             <form id="signup-form">
                 <h2 id="form-title">Create an Account</h2>
                 
@@ -298,6 +298,9 @@
         const signupForm = document.getElementById('signup-form');
         const loaderOverlay = document.getElementById('loader-overlay');
         const languageSelector = document.getElementById('language-selector');
+
+        // Define your new Render backend URL as a constant
+        const RENDER_API_BASE_URL = 'https://backend-wbat.onrender.com';
 
         const translations = {
             en: {
@@ -352,11 +355,13 @@
             }
 
             try {
-                const response = await fetch('http://localhost:5000/api/signup', {
+                // MODIFIED: Concatenate the new Render API URL with the specific route
+                const response = await fetch(`${RENDER_API_BASE_URL}/api/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, email, phone, password, state })
                 });
+                
                 const data = await response.json();
                 if (!response.ok) { throw new Error(data.message || 'An error occurred.'); }
                 alert('Signup successful! Please log in.');
