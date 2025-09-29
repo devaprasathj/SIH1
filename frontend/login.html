@@ -3,54 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Account - FarmWise</title>
+    <title>Login - FarmWise</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-        
         :root {
             --primary-color: #2c6b45;
-            --background-color: #f4f7f5;
-            --form-bg-color: rgba(255, 255, 255, 0.9);
+            --form-bg-color: #ffffff;
             --text-color: #333;
             --label-color: #555;
             --border-color: #ddd;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            padding: 0;
-            margin: 0;
-            position: relative;
-        }
-
-        .full-background-wrapper {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('kerala1.png');
-            background-repeat: no-repeat;
-            background-position: center;
+            /* MODIFIED: Added a white overlay to dim the background image, making text easier to read */
+            background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('kerala.jpg');
             background-size: cover;
-            z-index: -2;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
-
-        .full-background-dimmer {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(255, 255, 255, 0.4);
-            z-index: -1;
-        }
-
+        
         #loader-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(255, 255, 255, 0.8); display: none;
@@ -62,36 +37,33 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .page-container {
+        .main-container {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
+            grid-template-columns: 1fr 1.2fr;
+            min-height: 100vh;
             width: 100%;
-            max-width: 1000px;
+        }
+
+        .login-section {
+            display: flex;
+            justify-content: center;
             align-items: center;
-            position: relative;
-            z-index: 1;
-            margin: 20px;
+            padding: 20px;
         }
 
         .form-container {
             background-color: var(--form-bg-color);
-            padding: 50px;
+            padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
         }
         
         .language-selector-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            padding: 8px 15px;
-            border-radius: 50px;
-            border: 1px solid #eee;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: absolute; top: 25px; right: 25px; display: flex; align-items: center;
+            background-color: #fff; padding: 8px 15px; border-radius: 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); border: 1px solid var(--border-color);
             z-index: 10;
         }
         .language-selector-container i { margin-right: 8px; color: var(--primary-color); }
@@ -101,219 +73,156 @@
         }
         #language-selector:focus { outline: none; }
 
-        h2 {
-            text-align: left;
-            color: var(--text-color);
-            margin-bottom: 40px;
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .input-group {
-            flex: 1;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--label-color);
-            font-weight: 500;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 10px;
-        }
-
-        .submit-button:hover {
-            background-color: #245738;
-        }
-
-        .form-footer {
-            text-align: center;
-            margin-top: 25px;
-            color: var(--label-color);
-        }
-
-        .form-footer a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .form-footer a:hover {
-            text-decoration: underline;
-        }
-
         .branding-section {
-            padding: 40px;
-            height: 100%;
             display: flex;
-            justify-content: center;
-            align-items: flex-end;
             flex-direction: column;
-            color: #555;
-        }
-
-        .branding-section .logo h1 {
-            color: var(--primary-color);
-            font-size: 2rem;
-            font-weight: 600;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .branding-section .logo p {
-            color: #444;
-            font-style: italic;
-            text-align: right;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
-        }
-
-        /* --- MOBILE VIEW STYLES --- */
-        @media (max-width: 900px) {
-            body {
-                overflow-y: auto; 
-                align-items: flex-start;
-            }
-            .page-container {
-                grid-template-columns: 1fr;
-                margin: 0;
-                width: 100%;
-                max-width: 100%;
-            }
-            .branding-section {
-                display: none;
-            }
-            .form-container {
-                border-radius: 0;
-                box-shadow: none;
-                padding: 40px 25px;
-                min-height: 100vh;
-            }
-            
-            .language-selector-container {
-                position: static;
-                width: fit-content;
-                margin: 0 0 40px auto;
-            }
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
         }
         
-        @media (max-width: 500px) {
-            .form-row {
-                flex-direction: column;
-                gap: 0;
+        .branding-title h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            /* MODIFIED: Stronger text shadow for readability */
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        .branding-title p {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #245738;
+            margin-top: 5px;
+            margin-bottom: 50px;
+            /* MODIFIED: Added text shadow for readability */
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .features-slider {
+            position: relative;
+            height: 150px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .feature-item {
+            position: absolute; top: 0; left: 0; width: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0;
+            transform: translateX(100%) rotateY(-30deg); 
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .feature-item.active { opacity: 1; transform: translateX(0) rotateY(0); }
+        .feature-item.exit { opacity: 0; transform: translateX(-100%) rotateY(30deg); }
+        .feature-item i { font-size: 3rem; margin-bottom: 20px; color: var(--primary-color); }
+        .feature-item h3 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #333;
+            /* MODIFIED: Added text shadow for readability */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 { text-align: center; color: var(--text-color); margin-bottom: 10px; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: var(--label-color); font-weight: 500; }
+        input { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 1rem; }
+        input:focus { outline: none; border-color: var(--primary-color); }
+        .submit-button { width: 100%; padding: 14px; background-color: var(--primary-color); color: white; border: none; border-radius: 6px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background-color 0.3s; }
+        .submit-button:hover { background-color: #245738; }
+        .form-footer { text-align: center; margin-top: 25px; color: var(--label-color); }
+        .form-footer a { color: var(--primary-color); text-decoration: none; font-weight: 600; }
+
+        @media (max-width: 850px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                min-height: 0;
             }
-            .input-group {
-                margin-bottom: 20px;
+            .branding-section {
+                order: -1; 
+                padding: 60px 20px 40px 20px;
+            }
+            .branding-title h1 {
+                font-size: 3rem;
+            }
+            .feature-item h3 {
+                font-size: 1.3rem;
+            }
+            .login-section {
+                padding-bottom: 40px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="full-background-wrapper"></div>
-    <div class="full-background-dimmer"></div>
     <div id="loader-overlay"><div class="loader"></div></div>
-      <div class="language-selector-container">
-                <i class="fa-solid fa-globe"></i>
-                <select id="language-selector">
-                    <option value="en">English</option>
-                    <option value="ta">தமிழ் (Tamil)</option>
-                    <option value="ml">മലയാളം (Malayalam)</option>
-                </select>
-        </div>
 
-    <div class="page-container">
-        <div class="form-container">
-            
-            <form id="signup-form">
-                <h2 id="form-title">Create an Account</h2>
-                
-                <div class="form-row">
-                    <div class="input-group"><label for="signup-username" id="label-username">Username</label><input type="text" id="signup-username" required></div>
-                    <div class="input-group"><label for="signup-password" id="label-password">Password</label><input type="password" id="signup-password" required></div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="input-group"><label for="signup-email" id="label-email">Email</label><input type="email" id="signup-email" required></div>
-                    <div class="input-group"><label for="confirm-password" id="label-confirm-password">Confirm Password</label><input type="password" id="confirm-password" required></div>
-                </div>
+    <div class="language-selector-container">
+        <i class="fa-solid fa-globe"></i>
+        <select id="language-selector">
+            <option value="en">English</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+        </select>
+    </div>
 
-                <div class="form-row">
-                    <div class="input-group"><label for="signup-phone" id="label-phone">Phone Number</label><input type="tel" id="signup-phone" required></div>
-                    <div class="input-group">
-                        <label for="state" id="label-state">State</label>
-                        <select id="state" name="state" required>
-                            <option value="" disabled selected id="select-state-option">Select your state</option>
-                            <option value="Tamil Nadu">Tamil Nadu</option>
-                            <option value="Kerala">Kerala</option>
-                        </select>
+    <div class="main-container">
+
+        <div class="login-section">
+            <div class="form-container">
+                <form id="login-form">
+                    <h2 id="form-title">Welcome Back!</h2>
+                    
+                    <div class="input-group"><label for="username" id="label-username">Username</label><input type="text" id="username" required></div>
+                    <div class="input-group"><label for="password" id="label-password">Password</label><input type="password" id="password" required></div>
+                    <button type="submit" class="submit-button" id="submit-btn">Login</button>
+                    <div class="form-footer">
+                        <p><span id="footer-text">Don't have an account?</span> <a href="sign.html" id="footer-link">Sign Up</a></p>
                     </div>
-                </div>
-                
-                <button type="submit" class="submit-button" id="submit-btn">Sign Up</button>
-                
-                <div class="form-footer">
-                    <p><span id="footer-text">Already have an account?</span> <a href="login.html" id="footer-link">Sign In</a></p>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
 
         <div class="branding-section">
-            <div class="logo">
+            <div class="branding-title">
                 <h1 id="brand-title">Farm Wise</h1>
                 <p id="brand-subtitle">"your farm's intelligence"</p>
+            </div>
+            <div class="features-slider">
+                <div class="feature-item active"><i class="fa-solid fa-robot"></i><h3 id="feature-1">Krishi Sahayi Bot</h3></div>
+                <div class="feature-item"><i class="fa-solid fa-leaf"></i><h3 id="feature-2">Crop Disease Diagnosis</h3></div>
+                <div class="feature-item"><i class="fa-solid fa-cloud-sun-rain"></i><h3 id="feature-3">Weather Prediction</h3></div>
+                <div class="feature-item"><i class="fa-solid fa-users"></i><h3 id="feature-4">Farmer Community</h3></div>
             </div>
         </div>
     </div>
 
     <script>
-        const signupForm = document.getElementById('signup-form');
+        const loginForm = document.getElementById('login-form');
         const loaderOverlay = document.getElementById('loader-overlay');
         const languageSelector = document.getElementById('language-selector');
 
         // Define your new Render backend URL as a constant
         const RENDER_API_BASE_URL = 'https://backend-wbat.onrender.com';
-
+        
         const translations = {
-            en: {
-                "form-title": "Create an Account", "label-username": "Username", "label-email": "Email", "label-phone": "Phone Number", "label-password": "Password",
-                "label-confirm-password": "Confirm Password", "label-state": "State", "select-state-option": "Select your state", "submit-btn": "Sign Up", "footer-text": "Already have an account?", "footer-link": "Sign In", "brand-title": "Farm Wise", "brand-subtitle": "\"your farm's intelligence\""
+            en: { 
+                "form-title": "Welcome Back!", "form-subtitle": "Please enter your details to sign in.", "label-username": "Username", "label-password": "Password", "submit-btn": "Sign In", "footer-text": "Don't have an account?", "footer-link": "Sign Up",
+                "brand-title": "Farm Wise", "brand-subtitle": "\"your farm's intelligence\"",
+                "feature-1": "Krishi Sahayi Bot", "feature-2": "Crop Disease Diagnosis", "feature-3": "Weather Prediction", "feature-4": "Farmer Community"
             },
-            ta: {
-                "form-title": "ஒரு கணக்கை உருவாக்கவும்", "label-username": "பயனர்பெயர்", "label-email": "மின்னஞ்சல்", "label-phone": "தொலைபேசி எண்", "label-password": "கடவுச்சொல்",
-                "label-confirm-password": "கடவுச்சொல்லை உறுதிப்படுத்தவும்", "label-state": "மாநிலம்", "select-state-option": "உங்கள் மாநிலத்தைத் தேர்ந்தெடுக்கவும்", "submit-btn": "பதிவுபெறுக", "footer-text": "ஏற்கனவே ஒரு கணக்கு உள்ளதா?", "footer-link": "உள்நுழைய", "brand-title": "ஃபார்ம் வைஸ்", "brand-subtitle": "\"உங்கள் பண்ணையின் நுண்ணறிவு\""
+            ta: { 
+                "form-title": "மீண்டும் வருக!", "form-subtitle": "உள்நுழைய உங்கள் விவரங்களை உள்ளிடவும்.", "label-username": "பயனர்பெயர்", "label-password": "கடவுச்சொல்", "submit-btn": "உள்நுழைய", "footer-text": "கணக்கு இல்லையா?", "footer-link": "பதிவுபெறுக",
+                "brand-title": "ஃபார்ம் வைஸ்", "brand-subtitle": "\"உங்கள் பண்ணையின் நுண்ணறிவு\"",
+                "feature-1": "கிருஷி சாயி பாட்", "feature-2": "பயிர் நோய் கண்டறிதல்", "feature-3": "வானிலை முன்னறிவிப்பு", "feature-4": "உழவர் சமூகம்"
             },
-            ml: {
-                "form-title": "ഒരു അക്കൗണ്ട് ഉണ്ടാക്കുക", "label-username": "ഉപയോക്തൃനാമം", "label-email": "ഇമെയിൽ", "label-phone": "ഫോൺ നമ്പർ", "label-password": "പാസ്വേഡ്",
-                "label-confirm-password": "പാസ്വേഡ് സ്ഥിരീകരിക്കുക", "label-state": "സംസ്ഥാനം", "select-state-option": "നിങ്ങളുടെ സംസ്ഥാനം തിരഞ്ഞെടുക്കുക", "submit-btn": "സൈൻ അപ്പ് ചെയ്യുക", "footer-text": "ഇതിനകം ഒരു അക്കൗണ്ട് ഉണ്ടോ?", "footer-link": "സൈൻ ഇൻ ചെയ്യുക", "brand-title": "ഫാം വൈസ്", "brand-subtitle": "\"നിങ്ങളുടെ ഫാമിന്റെ ഇന്റലിജൻസ്\""
+            ml: { 
+                "form-title": "വീണ്ടും സ്വാഗതം!", "form-subtitle": "സൈൻ ഇൻ ചെയ്യുന്നതിന് നിങ്ങളുടെ വിശദാംശങ്ങൾ നൽകുക.", "label-username": "ഉപയോക്തൃനാമം", "label-password": "പാസ്വേഡ്", "submit-btn": "സൈൻ ഇൻ ചെയ്യുക", "footer-text": "ഒരു അക്കൗണ്ട് ഇല്ലേ?", "footer-link": "സൈൻ അപ്പ് ചെയ്യുക",
+                "brand-title": "ഫാം വൈസ്", "brand-subtitle": "\"നിങ്ങളുടെ ഫാമിന്റെ ഇന്റലിജൻസ്\"",
+                "feature-1": "കൃഷി സഹായി ബോട്ട്", "feature-2": "വിള രോഗനിർണയം", "feature-3": "കാലാവസ്ഥാ പ്രവചനം", "feature-4": "കർഷക സമൂഹം"
             }
         };
 
@@ -324,52 +233,62 @@
                 if (element) { element.textContent = langData[key]; }
             }
         };
-
+        
         languageSelector.addEventListener('change', (event) => {
-            const selectedLang = event.target.value;
-            changeLanguage(selectedLang);
-            localStorage.setItem('preferredLanguage', selectedLang);
+            changeLanguage(event.target.value);
+            localStorage.setItem('preferredLanguage', event.target.value);
         });
         
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
-            languageSelector.value = savedLang;
-            changeLanguage(savedLang);
-        });
+        const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+        languageSelector.value = savedLang;
+        changeLanguage(savedLang);
 
-        signupForm.addEventListener('submit', async (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            loaderOverlay.style.display = 'flex'; 
-
-            const username = document.getElementById('signup-username').value;
-            const email = document.getElementById('signup-email').value;
-            const phone = document.getElementById('signup-phone').value;
-            const password = document.getElementById('signup-password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-            const state = document.getElementById('state').value;
-
-            if (password !== confirmPassword) {
-                loaderOverlay.style.display = 'none';
-                alert('Passwords do not match.');
-                return;
-            }
-
+            loaderOverlay.style.display = 'flex';
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
             try {
                 // MODIFIED: Concatenate the new Render API URL with the specific route
-                const response = await fetch(`${RENDER_API_BASE_URL}/api/signup`, {
+                const response = await fetch(`${RENDER_API_BASE_URL}/api/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, phone, password, state })
+                    body: JSON.stringify({ username, password })
                 });
                 
                 const data = await response.json();
-                if (!response.ok) { throw new Error(data.message || 'An error occurred.'); }
-                alert('Signup successful! Please log in.');
-                window.location.href = 'login.html';
+                
+                // IMPORTANT: Replaced alert() with a console log/message box display, 
+                // but since this is an HTML file for deployment, we stick to the original plan 
+                // of redirecting or throwing an error, but using the original alert() call.
+                if (!response.ok) throw new Error(data.message || "Unknown error occurred.");
+                
+                localStorage.setItem('token', data.token);
+                window.location.href = 'index.html';
+
             } catch (error) {
                 loaderOverlay.style.display = 'none';
-                alert('Signup failed: ' + error.message);
+                // Using alert() as per the original user code structure
+                alert('Login failed: ' + error.message); 
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const features = document.querySelectorAll('.feature-item');
+            let currentFeatureIndex = 0;
+            setInterval(() => {
+                const currentFeature = features[currentFeatureIndex];
+                const nextFeatureIndex = (currentFeatureIndex + 1) % features.length;
+                const nextFeature = features[nextFeatureIndex];
+                currentFeature.classList.remove('active');
+                currentFeature.classList.add('exit');
+                nextFeature.classList.add('active');
+                setTimeout(() => {
+                    currentFeature.classList.remove('exit');
+                }, 800);
+                currentFeatureIndex = nextFeatureIndex;
+            }, 3000);
         });
     </script>
 </body>
